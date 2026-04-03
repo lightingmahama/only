@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork Booking Site</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="css/booking.css">
+
+    <style>
+        /* Reset and base styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    animation: slideDown 1s ease-out;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+nav a.notif-link {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    font-weight: 600;
+}
+
+nav a.notif-link {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    font-weight: 600;
+}
+
+.brand-cart {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cart-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.cart-icon {
+    font-size: 1rem;
+}
+
+.count {
+    min-width: 1.4rem;
+    text-align: center;
+    background: #ff4757;
+    border-radius: 999px;
+    color: white;
+    padding: 0 0.4rem;
+}
+
+.hamburger {
+    display: none;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.hamburger:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.2);
+}
+
+nav.open {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0,0,0,0.8);
+    position: absolute;
+    top: 72px;
+    right: 1rem;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+/* Main content */
+main {
+    flex: 1;
+    display: flex;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.artworks-section {
+    flex: 1;
+}
+
+.artworks-section h2 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.artworks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.artwork {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 1s ease-out;
+    position: relative;
+}
+
+.artwork:nth-child(1) { animation-delay: 0.1s; }
+.artwork:nth-child(2) { animation-delay: 0.2s; }
+.artwork:nth-child(3) { animation-delay: 0.3s; }
+.artwork:nth-child(4) { animation-delay: 0.4s; }
+.artwork:nth-child(5) { animation-delay: 0.5s; }
+.artwork:nth-child(6) { animation-delay: 0.6s; }
+
+.artwork:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.artwork.booked-other {
+    border: 3px solid #e74c3c;
+    background: #ffecec;
+}
+
+.artwork.sold {
+    border: 3px solid #e74c3c;
+    background: #ffecec;
+    position: relative;
+}
+
+.artwork.sold::before {
+    content: 'SOLD';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #e74c3c;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    z-index: 3;
+    transform: rotate(-15deg);
+    letter-spacing: 1px;
+}
+
+.artwork img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.artwork h3 {
+    margin: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #28a745;
+    margin: 0 1rem 1rem;
+}
+
+.artwork button {
+    width: calc(100% - 2rem);
+    margin: 0 1rem 1rem;
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.artwork button:hover {
+    background: linear-gradient(45deg, #218838, #17a2b8);
+    transform: scale(1.05);
+}
+
+.artwork button:disabled {
+    background: linear-gradient(45deg, #ccc, #aaa);
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: scale(1);
+}
+
+.artwork.sold button {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
+.artwork.sold button:hover {
+    background: linear-gradient(45deg, #c0392b, #a93226);
+    transform: scale(1.05);
+}
+
+/* Cart */
+.cart {
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    height: fit-content;
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.cart h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+.customer-form {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+.customer-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.customer-form input,
+.customer-form textarea {
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.customer-form input:focus,
+.customer-form textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.customer-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.cart-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #28a745;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: min(500px, 90%);
+    animation: floatIn 0.4s ease-out;
+}
+
+.modal h2 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.modal p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.modal-buttons button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modal-buttons button.primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.modal-buttons button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+@keyframes floatIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    border-left: 4px solid #f39c12;
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 350px;
+    animation: slideInRight 0.4s ease-out;
+    z-index: 999;
+}
+
+.notification.booked {
+    border-left-color: #e74c3c;
+}
+
+.notification h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #e74c3c;
+    font-size: 1rem;
+}
+
+.notification p {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.notification button {
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.notification button:hover {
+    background: #c0392b;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    animation: slideUp 1s ease-out 0.7s both;
+}
+
+/* Keyframes */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .artworks {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    .cart {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .cart {
+        width: 100%;
+        margin-top: 2rem;
+    }
+    header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+        align-items: flex-start;
+        position: relative;
+    }
+    .hamburger {
+        display: inline-flex;
+        margin-top: 0.8rem;
+    }
+    nav {
+        display: none;
+        margin-top: 1rem;
+        width: 100%;
+    }
+    nav.open {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        top: 0;
+        right: 0;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+    nav.open a {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.6rem;
+        padding: 0.4rem;
+        border-radius: 8px;
+    }
+    .artworks-section h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    .artworks {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .artwork {
+        max-width: 100%;
+    }
+    .artwork img {
+        height: 150px;
+    }
+    .artwork h3 {
+        font-size: 1rem;
+    }
+    .price {
+        font-size: 1rem;
+    }
+    .artwork button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+    .cart {
+        padding: 1rem;
+    }
+    .cart h2 {
+        font-size: 1.2rem;
+    }
+    footer {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function App() {
+            const initialArtworks = [
+                { id: 1, title: 'Abstract Painting', price: 150, image: 'https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg' },
+                { id: 2, title: 'Landscape Scene', price: 200, image: 'https://images.pexels.com/photos/164455/pexels-photo-164455.jpeg' },
+                { id: 3, title: 'Portrait Study', price: 120, image: 'https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg' },
+                { id: 4, title: 'Modern Sculpture', price: 300, image: 'https://images.pexels.com/photos/1320684/pexels-photo-1320684.jpeg' },
+                { id: 5, title: 'Watercolor Flower', price: 80, image: 'https://images.pexels.com/photos/1572386/pexels-photo-1572386.jpeg' },
+                { id: 6, title: 'Digital Art Piece', price: 250, image: 'https://images.pexels.com/photos/1812483/pexels-photo-1812483.jpeg' }
+            ];
+
+            const [artworks, setArtworks] = useState(initialArtworks);
+            const [cart, setCart] = useState([]);
+            const [menuOpen, setMenuOpen] = useState(false);
+            const [customer, setCustomer] = useState({ name: '', email: '', phone: '', address: '' });
+            const [error, setError] = useState('');
+            const [showModal, setShowModal] = useState(true);
+            const [serverArtworks, setServerArtworks] = useState([]);
+            const [notification, setNotification] = useState(null);
+
+            const API_URL = 'http://localhost:3000';
+
+            const addToCart = async (artwork) => {
+                if (!customer.name || !customer.email) {
+                    setError('Please fill in your name and email first');
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`${API_URL}/api/book`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: artwork.id, user: customer })
+                    });
+
+                    if (!res.ok) {
+                        const data = await res.json();
+                        setError(data.message || 'Booking failed');
+                        return;
+                    }
+
+                    setCart([...cart, artwork]);
+                    setError('');
+                } catch (err) {
+                    if (err.message === 'Failed to fetch') {
+                        setError('Cannot connect to server. Make sure server.js is running (node server.js)');
+                    } else {
+                        setError('Error booking artwork: ' + err.message);
+                    }
+                }
+            };
+
+            const unbook = async (artwork) => {
+                try {
+                    const res = await fetch(`${API_URL}/api/unbook`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: artwork.id })
+                    });
+
+                    if (!res.ok) {
+                        const data = await res.json();
+                        setError(data.message || 'Unbooking failed');
+                        return;
+                    }
+
+                    setCart(cart.filter(item => item.id !== artwork.id));
+                    setError('');
+                } catch (err) {
+                    setError('Error unbooking artwork: ' + err.message);
+                }
+            };
+
+            const handleCustomerSubmit = () => {
+                if (!customer.name || !customer.email) {
+                    setError('Name and email are required');
+                    return;
+                }
+                setShowModal(false);
+                setError('');
+            };
+
+            const fetchServerArtworks = async () => {
+                try {
+                    const res = await fetch(`${API_URL}/api/artworks`);
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    
+                    // Check for newly booked items
+                    data.forEach(serverItem => {
+                        const localItem = serverArtworks.find(x => x.id === serverItem.id);
+                        if (localItem && localItem.available && !serverItem.available) {
+                            setNotification({
+                                id: serverItem.id,
+                                title: serverItem.title,
+                                bookedBy: serverItem.bookedBy || 'Someone',
+                                message: `${serverItem.title} was just booked by ${serverItem.bookedBy || 'another user'}!`
+                            });
+                            setTimeout(() => setNotification(null), 5000);
+                        }
+                    });
+                    
+                    setServerArtworks(data);
+                } catch (err) {
+                    console.log('Error fetching artworks:', err.message);
+                }
+            };
+
+            React.useEffect(() => {
+                fetchServerArtworks();
+                const interval = setInterval(fetchServerArtworks, 3000);
+                return () => clearInterval(interval);
+            }, [showModal]);
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+            return (
+                <div className="container">
+                    {notification && (
+                        <div className="notification booked">
+                            <h3>🎨 Item Booked!</h3>
+                            <p>{notification.message}</p>
+                        </div>
+                    )}
+                    {showModal && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2>Welcome to Unipra Gallery</h2>
+                                <p>Please provide your details to get started</p>
+                                <div className="customer-form">
+                                    <label>Name*</label>
+                                    <input type="text" placeholder="Your full name" value={customer.name} onChange={(e) => setCustomer({...customer, name: e.target.value})} />
+                                    <label>Email*</label>
+                                    <input type="email" placeholder="Your email address" value={customer.email} onChange={(e) => setCustomer({...customer, email: e.target.value})} />
+                                    <label>Phone</label>
+                                    <input type="tel" placeholder="Your phone number" value={customer.phone} onChange={(e) => setCustomer({...customer, phone: e.target.value})} />
+                                    <label>Address</label>
+                                    <textarea placeholder="Your address" value={customer.address} onChange={(e) => setCustomer({...customer, address: e.target.value})} />
+                                </div>
+                                {error && <p style={{color: '#e74c3c', fontWeight: 700, marginTop: '1rem'}}>{error}</p>}
+                                <div className="modal-buttons">
+                                    <button className="primary" onClick={handleCustomerSubmit}>Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <header>
+                        <div className="brand-cart">
+                            <h1>Unipra Artwork Gallery</h1>
+                            <div className="cart-badge" title="Items in cart">
+                                <span className="cart-icon">🛒</span>
+                                <span className="count">{cart.length}</span>
+                            </div>
+                        </div>
+                        <button className="hamburger" aria-label="Open menu" onClick={() => setMenuOpen(!menuOpen)}>
+                            ☰
+                        </button>
+                        <nav className={menuOpen ? 'open' : ''}>
+                            <a href="#artworks" onClick={() => setMenuOpen(false)}>Artworks</a>
+                            <a href="#cart" onClick={() => setMenuOpen(false)}>Cart</a>
+                            <a href="notifications.html" target="_blank" className="notif-link">📊 Notifications</a>
+                        </nav>
+                    </header>
+                    <main>
+                        <section id="artworks" className="artworks-section">
+                            <h2>Available Artworks</h2>
+                            {error && <p style={{ color: '#ff4757', fontWeight: 700, marginBottom: '1rem' }}>{error}</p>}
+                            <div className="artworks">
+                                {artworks.length === 0 ? (
+                                    <p>All artworks have been purchased!</p>
+                                ) : (
+                                    artworks.map(artwork => {
+                                        const isMine = cart.some(item => item.id === artwork.id);
+                                        const serverItem = serverArtworks.find(x => x.id === artwork.id);
+                                        const isBookedByOther = serverItem && !serverItem.available && !isMine;
+                                        return (
+                                            <div key={artwork.id} className={`artwork ${isMine ? 'sold' : ''} ${isBookedByOther ? 'booked-other' : ''}`}>
+                                                {isBookedByOther && <div style={{position: 'absolute', top: '0.6rem', right: '0.6rem', background: '#e74c3c', color: 'white', padding: '0.3rem 0.6rem', fontSize: '0.7rem', fontWeight: 700, borderRadius: '4px', zIndex: 2}}>BOOKED</div>}
+                                                <img src={artwork.image} alt={artwork.title} />
+                                                <h3>{artwork.title}</h3>
+                                                <p className="price">${artwork.price}</p>
+                                                <button disabled={isBookedByOther} onClick={() => isMine ? unbook(artwork) : addToCart(artwork)}>
+                                                    {isMine ? 'Unbook' : isBookedByOther ? 'Booked by Other' : 'Buy Now'}
+                                                </button>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+                        </section>
+                        <aside id="cart" className="cart">
+                            <h2>Your Cart</h2>
+                            {cart.length === 0 ? (
+                                <p>Your cart is empty.</p>
+                            ) : (
+                                <div>
+                                    {cart.map(item => (
+                                        <div key={item.id} className="cart-item">
+                                            <p>{item.title} - ${item.price}</p>
+                                        </div>
+                                    ))}
+                                    <div className="total">
+                                        <strong>Total: ${total}</strong>
+                                    </div>
+                                </div>
+                            )}
+                        </aside>
+                    </main>
+                    <footer>
+                        <p>&copy; 2026 Artwork Booking Site. All rights reserved.</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

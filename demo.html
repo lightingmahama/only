@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork Gallery - Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .artworks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .artwork {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .artwork img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .artwork-content {
+            padding: 15px;
+        }
+        .artwork h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        .button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.05);
+        }
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .instructions h2 {
+            margin-top: 0;
+            color: #fff;
+        }
+        .instructions ol {
+            text-align: left;
+            display: inline-block;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Unipra Artwork Gallery</h1>
+
+        <div class="status">
+            <h2>⚠️ Server Not Connected</h2>
+            <p>This is a demo version. To get full functionality with real-time booking and notifications, you need to install Node.js and start the server.</p>
+        </div>
+
+        <div class="instructions">
+            <h2>🚀 How to Get Full Functionality:</h2>
+            <ol>
+                <li><strong>Install Node.js:</strong> Download from <a href="https://nodejs.org/" style="color: #fff; text-decoration: underline;">nodejs.org</a> (LTS version)</li>
+                <li><strong>Run the installer</strong> and restart your computer</li>
+                <li><strong>Double-click</strong> <code>start-server.bat</code> in your project folder</li>
+                <li><strong>Open:</strong> <code>http://localhost:3000/booking3.html</code></li>
+            </ol>
+        </div>
+
+        <div class="artworks">
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg" alt="Abstract Painting">
+                <div class="artwork-content">
+                    <h3>Abstract Painting</h3>
+                    <p class="price">$150</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/164455/pexels-photo-164455.jpeg" alt="Landscape Scene">
+                <div class="artwork-content">
+                    <h3>Landscape Scene</h3>
+                    <p class="price">$200</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg" alt="Portrait Study">
+                <div class="artwork-content">
+                    <h3>Portrait Study</h3>
+                    <p class="price">$120</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/1320684/pexels-photo-1320684.jpeg" alt="Modern Sculpture">
+                <div class="artwork-content">
+                    <h3>Modern Sculpture</h3>
+                    <p class="price">$300</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/1572386/pexels-photo-1572386.jpeg" alt="Watercolor Flower">
+                <div class="artwork-content">
+                    <h3>Watercolor Flower</h3>
+                    <p class="price">$80</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <img src="https://images.pexels.com/photos/1812483/pexels-photo-1812483.jpeg" alt="Digital Art Piece">
+                <div class="artwork-content">
+                    <h3>Digital Art Piece</h3>
+                    <p class="price">$250</p>
+                    <button class="button" onclick="alert('Server not running! Install Node.js first.')">Buy Now (Demo)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
